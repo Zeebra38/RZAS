@@ -1,12 +1,37 @@
 from django.contrib import admin
-from .models import Order, Device, Customer, DeviceInUse
+from .models import Position, Document, Employee, Certificate, Discipline, Exam
 
 
-class DeviceAdmin(admin.ModelAdmin):
-    # поля для отображения
-    list_display = ('id', 'manufacturer', 'model')
-    # поля для поиска
-    search_fields = ('manufacturer', 'model') 
+class PositionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'duties', 'conditions', 'requirements')
+
+    search_fields = ('title', 'duties')
+
+
+class DocumentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'department_name', 'issue_date', 'expiration_date')
+
+    search_fields = ('department_name',)
+
+
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'full_name', 'gender', 'birth_date', 'phone', 'email')
+
+    search_fields = ('full_name', 'gender', 'birth_date', 'phone', 'email')
+
+
+class CertificateAdmin(admin.ModelAdmin):
+    list_display = ('id', 'issue_date', 'mark')
+
+
+class DisciplineAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'hours')
+
+    search_fields = ('title',)
+
+
+class ExamAdmin(admin.ModelAdmin):
+    list_display = ('id', 'attempts_count', 'type')
 
 
 class OrderAdmin(admin.ModelAdmin):
@@ -35,15 +60,9 @@ class OrderAdmin(admin.ModelAdmin):
     # поля для поиска
     search_fields = ('customer__customer_name', 'device__id', 'device__serial_number',
                      'device__analyzer__model', 'device__analyzer__manufacturer')
-    
-    # заменить выпадашку на ввод информации
-    raw_id_fields = ('device', )
 
-class CustomerAdmin(admin.ModelAdmin):
-    # поля для отображения
-    list_display = ('id', 'customer_name', 'customer_address', 'customer_city')
-    # поля для поиска
-    search_fields = ('customer_name', 'customer_address')
+    # заменить выпадашку на ввод информации
+    raw_id_fields = ('device',)
 
 
 class DeviceInUseAdmin(admin.ModelAdmin):
@@ -67,11 +86,18 @@ class DeviceInUseAdmin(admin.ModelAdmin):
 
     # поля для поиска
     search_fields = ('serial_number', 'analyzer__manufacturer', 'analyzer__model')
-    
+
     # заменить выпадашку на ввод информации
     raw_id_fields = ('customer', 'analyzer')
 
-admin.site.register(Order, OrderAdmin)
-admin.site.register(Device, DeviceAdmin)
-admin.site.register(Customer, CustomerAdmin)
-admin.site.register(DeviceInUse, DeviceInUseAdmin)
+
+admin.site.register(Position, PositionAdmin)
+admin.site.register(Document, DocumentAdmin)
+admin.site.register(Employee, EmployeeAdmin)
+admin.site.register(Certificate, CertificateAdmin)
+admin.site.register(Discipline, DisciplineAdmin)
+admin.site.register(Exam, ExamAdmin)
+# admin.site.register(Order, OrderAdmin)
+# admin.site.register(Device, DeviceAdmin)
+# admin.site.register(Customer, CustomerAdmin)
+# admin.site.register(DeviceInUse, DeviceInUseAdmin)
